@@ -195,7 +195,7 @@ const SEC=[["box","Box Selection","Chọn thùng"],["pack","Packaging Check","Ki
 const DSEC=[["dpk","Packaging Before Test","Đóng gói trước khi test"],["dwt","Weight Photos","Cân nặng thùng & sản phẩm"],["ddim","Packaging Dim","Kích thước thùng"],["dcor","Drop Test – Corner","Thả rơi – Góc"],["dfac","Drop Test – Face","Thả rơi – Mặt"],["dedg","Drop Test – Edges","Thả rơi – Cạnh"],["dopen","Open Box After Tested","Khui thùng sau khi test"],["dinb","Inner Box Photos","Thùng chèn bên trong (kích thước inner box)"],["dmat","Packing Materials","Vật tư đóng gói"],["dcmp","Loose Components","Chi tiết rời"],["dman","Manual (AI)","Hướng dẫn lắp ráp (HDLR)"],["dpph","Product After Unbox","Sản phẩm sau khi khui thùng"]];
 const PSEC=[["pcov","Cover Photo","Ảnh trang bìa"],["pms","Master Samples at Factory","Mẫu kí lưu tại nhà máy"],["ppro","Product Photos","Hình sản phẩm"],["pww","WW Product Photos","Hình sản phẩm chưa sơn"],["podim","Overall Dim","Kích thước tổng thể"],["pdim","Details Dim Measure","Đo kích thước chi tiết"],["pmat","Materials","Vật liệu"],["pkd","KD Component – HW","Chi tiết tháo rời & ngũ kim"],["pdraw","Product Drawing","Bản vẽ sản phẩm"],["pwatch","Production Watch Out","Lưu ý cho sản xuất"]];
 const ASEC=[...SEC,...DSEC,...PSEC],isDrop=r=>(r||S||{}).type==="drop",isPPS=r=>(r||S||{}).type==="pps",isOne=r=>isDrop(r)||isPPS(r),isDK=k=>DSEC.some(z=>z[0]===k)||PSEC.some(z=>z[0]===k),SECS=()=>isDrop()?DSEC:isPPS()?PSEC:SEC;
-const APPV="v64";const $=s=>document.querySelector(s);
+const APPV="v64b";const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 let db,S,V={p:"list"},mem={};
@@ -997,7 +997,7 @@ const CK=["#Carton Check",["Carton Size",A,CL,"+/-1cm"],["Carton Weight",A,CW,"+
 
 const busyMsg=t=>{let z=document.getElementById("bz");if(!z){z=document.createElement("div");z.id="bz";z.style.cssText="position:fixed;inset:0;background:#000b;z-index:98;display:grid;place-items:center;color:#fff;font:600 18px system-ui;text-align:center;padding:20px";document.body.append(z)}z.textContent="⏳ "+t},busyEnd=()=>{const z=document.getElementById("bz");if(z)z.remove()};
 const doExp0=async mode=>{
-const cf=CF(),lg=(cf.logo&&await img("logo"))||DEFLOGO;const c=S.cover,t=tot(),ok=verdict(),n=Math.max(8,S.skus.length),H=[],rc=ok?"#00b050":"#c00000",I2=id=>mode===2&&id?"pptx:"+id:(mem[id]||"");
+const cf=CF(),lg=(cf.logo&&await img("logo"))||"";/* không chèn logo RS mặc định */const c=S.cover,t=tot(),ok=verdict(),n=Math.max(8,S.skus.length),H=[],rc=ok?"#00b050":"#c00000",I2=id=>mode===2&&id?"pptx:"+id:(mem[id]||"");
 if(mode!==2){const ids=S.skus.flatMap(k=>Object.values(k.sec).flatMap(x=>x.ph.map(p=>p.id))).filter(Boolean);let dn=0;await pool(ids,6,async id=>{await img(id);if(++dn%10===0)busyMsg(`Đang chuẩn bị ảnh ${dn}/${ids.length}…`)})}
 const has=(k,y)=>secUsed(k.sec[y],y);
 const hd=(en,vi,sk,cl="",st="")=>`<div class="hd ${cl} ${vi?"t2":""}" style="${st}"><div class=ht><b>${esc(en)}</b>${vi?`<small>${esc(vi)}</small>`:""}</div><span class=sk>${esc(sk||"")}</span>${IXA}</div>`;
